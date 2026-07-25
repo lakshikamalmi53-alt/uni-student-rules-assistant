@@ -13,8 +13,8 @@ The application uses an Agentic RAG pattern where query routing and answer synth
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Student as 🧑‍🎓 Student
-    participant UI as 🖥️ Streamlit UI
+    actor Student as Student
+    participant UI as Streamlit UI
     participant Router as Router Agent (Llama-3.1-8B)
     participant VectorDB as FAISS Vector Store
     participant Synthesizer as RAG Synthesizer (Llama-3.3-70B)
