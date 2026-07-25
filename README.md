@@ -52,11 +52,11 @@ graph TD
 
 | # | Test Query | Retrieved Relevant Context? | Result |
 |---|---|---|---|
-| 1 | What is the minimum attendance requirement? | Yes (Section on examination eligibility) | ✅ Relevant |
-| 2 | What is the policy on academic integrity? | Yes (Section on misconduct & penalties) | ✅ Relevant |
-| 3 | How can I request a resit exam? | Yes (Section on grading & re-examinations) | ✅ Relevant |
-| 4 | What is the campus dress code policy? | Yes (Section on student conduct guidelines) | ✅ Relevant |
-| 5 | Can I park my flight in the cafeteria? | No (Correctly states information is not available) | ✅ Passed (No Hallucination) |
+| 1 | What is the minimum attendance requirement? | Yes (80% requirement retrieved)| ✅ Relevant |
+| 2 | What is the policy on academic integrity? | Partial (Mentions exam malpractices/cheating fees in Sec 13.1.9) | ✅ Relevant |
+| 3 | How can I request a resit exam? | Partial (Retrieved repeat exam fee of Rs. 5,000) | ✅ Relevant |
+| 4 | What is the campus dress code policy? | No (Correctly stated not available in handbook) | ✅ Relevant |
+| 5 | Can I park my flight in the cafeteria? | No (Correctly stated context does not mention aircrafts) | ✅ Passed (No Hallucination) |
 
 ---
 
