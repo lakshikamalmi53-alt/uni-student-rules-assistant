@@ -61,19 +61,18 @@ graph TD
 ## Local Setup Instructions
 
 1. **Clone Repository:**
-   git clone [https://github.com/lakshikamalmi53-alt/uni-student-rules-assistant.git](https://github.com/lakshikamalmi53-alt/uni-student-rules-assistant.git)
+   git clone https://github.com/lakshikamalmi53-alt/uni-student-rules-assistant.git
    cd uni-student-rules-assistant
 
 2. **Set up Virtual Environment:**
     python -m venv venv
-    **On Windows:**
     venv\Scripts\activate
 
 3. **Install Dependencies:**
     pip install -r requirements.txt
 
 4. **Environment Variables:**
-Create a .env file in the root folder:
+    Create a .env file in the root folder:
     GROQ_API_KEY=my_groq_api_key_here
 
 5. **Run Application:**

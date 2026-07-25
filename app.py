@@ -21,6 +21,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Fetch Groq API Key dynamically from Streamlit Secrets or Local .env
+groq_key = os.getenv("GROQ_API_KEY")
+
+try:
+    if "GROQ_API_KEY" in st.secrets:
+        groq_key = st.secrets["GROQ_API_KEY"]
+except Exception:
+    # Fallback to .env when running locally without a secrets.toml file
+    pass
+
+if not groq_key:
+    st.error("⚠️ GROQ_API_KEY not found! Please configure it in Streamlit Cloud Secrets or your local .env file.")
+    st.stop()
+    
 # Custom Styling
 st.markdown("""
     <style>
@@ -43,7 +57,7 @@ with st.sidebar:
     - **Design Patterns:** Router, Tool-Use, Reflection
     """)
     st.markdown("---")
-    if st.button("🧹 Clear Chat History", use_container_width=True):
+    if st.button("Clear Chat History", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
 
@@ -56,7 +70,7 @@ st.markdown("<div class='sub-header'>Multi-Agent AI System for Horizon Campus St
 def prepare_vector_store():
     data_path = "./data"
     if not os.path.exists(data_path) or not os.listdir(data_path):
-        st.error("❌ Data folder empty! Place STUDENT HANDBOOK.txt inside `./data`.")
+        st.error("Data folder empty! Place STUDENT HANDBOOK.txt inside `./data`.")
         st.stop()
     
     loader = DirectoryLoader(data_path, glob="*.txt", loader_cls=TextLoader, loader_kwargs={'encoding': 'utf-8'})
@@ -76,8 +90,6 @@ except Exception as e:
     st.stop()
 
 # 3. Model Initialization (Multi-Model Strategy)
-groq_key = os.getenv("GROQ_API_KEY")
-
 # Model 1: Fast & Cheap for Intent Routing
 router_llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.0, groq_api_key=groq_key)
 
@@ -129,17 +141,17 @@ if user_input := st.chat_input("Ask a question about Horizon Campus rules..."):
 
     with st.chat_message("assistant", avatar="🤖"):
         # Step A: Intent Routing (Agent 1)
-        with st.status("🧠 Agent Workflow Active...", expanded=True) as status:
-            st.write("🔍 **Router Agent (Llama 3.1 8B):** Classifying user intent...")
+        with st.status("Agent Workflow Active...", expanded=True) as status:
+            st.write("**Router Agent (Llama 3.1 8B):** Classifying user intent...")
             intent = route_query(user_input)
             
             if intent == "GREETING":
-                st.write("💬 Intent: **Greeting**. Generating response...")
+                st.write(" Intent: **Greeting**. Generating response...")
                 answer = synthesis_llm.invoke(f"Respond politely as Horizon Campus Assistant to: {user_input}").content
                 status.update(label="✅ Intent: Greeting processed!", state="complete")
             else:
-                st.write("📚 Intent: **Rules Query**. Activating RAG Synthesizer Agent (Llama 3.3 70B)...")
-                st.write("🔎 Retrieving relevant chunks from Student Handbook FAISS Index...")
+                st.write("Intent: **Rules Query**. Activating RAG Synthesizer Agent (Llama 3.3 70B)...")
+                st.write("Retrieving relevant chunks from Student Handbook FAISS Index...")
                 response = rag_chain.invoke({"input": user_input})
                 answer = response["answer"]
                 status.update(label="✅ Intent: Handbook Search complete!", state="complete")
