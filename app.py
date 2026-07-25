@@ -32,9 +32,9 @@ except Exception:
     pass
 
 if not groq_key:
-    st.error("⚠️ GROQ_API_KEY not found! Please configure it in Streamlit Cloud Secrets or your local .env file.")
+    st.error("GROQ_API_KEY not found! Please configure it in Streamlit Cloud Secrets or your local .env file.")
     st.stop()
-    
+
 # Custom Styling
 st.markdown("""
     <style>
