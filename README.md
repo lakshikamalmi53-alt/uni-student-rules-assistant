@@ -1,14 +1,14 @@
-# 🎓 Horizon Campus - Student Rules & Regulations Assistant
+# Horizon Campus - Student Rules & Regulations Assistant
 
-An Agentic Multi-Agent AI system designed to assist university students by retrieving accurate information from the official Horizon Campus Student Handbook.
+A Streamlit-based AI assistant built to help Horizon Campus students quickly find information from the official Student Handbook using a Multi-Agent RAG setup.
 
-🌐 **Live Streamlit App:** [https://uni-student-rules-assistant-mubkwp3qupmez3qqt5okar.streamlit.app/](https://uni-student-rules-assistant-mubkwp3qupmez3qqt5okar.streamlit.app/)
+Live Demo: https://uni-student-rules-assistant-mubkwp3qupmez3qqt5okar.streamlit.app/
 
 ---
 
-## 🏗️ System Architecture & Workflow
+## System Architecture
 
-The system utilizes an **Agentic RAG Design Pattern** with explicit agent-to-agent communication, intent routing, and self-critique mechanisms.
+The application uses an Agentic RAG pattern with two main agents handling query routing and answer synthesis.
 
 ```mermaid
 graph TD
@@ -18,18 +18,17 @@ graph TD
     D --> E[(FAISS Vector Store <br/> HuggingFace Embeddings)]
     E --> D
     D --> F[Final Answer]
-```
+
+
+## Agentic Design Patterns
+
+1. Router Pattern: The route_query() function checks user intent and splits requests into basic greetings (GREETING) or policy questions (RULES_QUERY) to optimize latency and token costs.
+2. Tool-Use Pattern: The RAG Synthesizer agent queries the FAISS vector index dynamically to fetch context from data/STUDENT HANDBOOK.txt.
+3. Reflection / Self-Critique Pattern: Strict system prompt rules force the model to verify context before responding, preventing hallucinated answers when information isn't in the handbook.
+
 ---
 
-## 🎯 Agentic Design Patterns Used
-
-1. **Router Pattern:** `route_query()` routes incoming user prompts into distinct intent workflows (`GREETING` vs `RULES_QUERY`) to optimize latency and token costs.
-2. **Tool-Use Pattern:** The RAG Synthesizer agent interfaces dynamically with the FAISS vector store index to retrieve domain-specific context from `data/STUDENT HANDBOOK.txt`.
-3. **Reflection / Self-Critique Pattern:** The synthesis agent prompt incorporates strict verification constraints to prevent hallucinations when context is missing.
-
----
-
-## 🤖 Model Selection Comparison Table
+## Model Selection Comparison
 
 | Sub-task | Model Selected | Provider | Justification (Latency, Cost, Reasoning) |
 | :--- | :--- | :--- | :--- |
@@ -38,14 +37,14 @@ graph TD
 
 ---
 
-## 📚 RAG Pipeline Details & Evaluation
+## RAG Pipeline Details & Evaluation
 
 * **Corpus:** Horizon Campus Student Handbook (`.txt`)
 * **Chunking Strategy:** `RecursiveCharacterTextSplitter` (Chunk Size: 1000, Overlap: 200)
-* **Embedding Model:** `sentence-transformers/all-MiniLM-L6-v2` (Local HuggingFace embeddings)
-* **Vector Store:** FAISS (Facebook AI Similarity Search)
+* **Embedding Model:** `sentence-transformers/all-MiniLM-L6-v2` 
+* **Vector Store:** FAISS 
 
-### 📊 Retrieval Evaluation (5 Sample Test Queries)
+### Retrieval Evaluation 
 
 | # | Test Query | Retrieved Relevant Context? | Result |
 |---|---|---|---|
@@ -54,12 +53,3 @@ graph TD
 | 3 | How can I request a resit exam? | Yes (Section on grading & re-examinations) | ✅ Relevant |
 | 4 | What is the campus dress code policy? | Yes (Section on student conduct guidelines) | ✅ Relevant |
 | 5 | Can I park my flight in the cafeteria? | No (Correctly states information is not available) | ✅ Passed (No Hallucination) |
-
----
-
-## 💻 Local Setup Instructions
-
-1. **Clone Repository:**
-   ```bash
-   git clone [https://github.com/lakshikamalmi53-alt/uni-student-rules-assistant.git](https://github.com/lakshikamalmi53-alt/uni-student-rules-assistant.git)
-   cd uni-student-rules-assistants
