@@ -11,29 +11,15 @@ Live Demo: [https://uni-student-rules-assistant-mubkwp3qupmez3qqt5okar.streamlit
 The application uses an Agentic RAG pattern where query routing and answer synthesis are handled by separate specialized agents.
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    actor Student as Student
-    participant UI as Streamlit UI
-    participant Router as Router Agent (Llama-3.1-8B)
-    participant VectorDB as FAISS Vector Store
-    participant Synthesizer as RAG Synthesizer (Llama-3.3-70B)
-
-    Student->>UI: Submits Query
-    UI->>Router: Sends User Query
-    Router-->>Router: Classifies Intent (GREETING vs RULES_QUERY)
+graph TD
+    A[Student Asks Question] --> B{Assistant Checks Intent}
     
-    alt Intent = GREETING
-        Router->>Synthesizer: Route general greeting
-        Synthesizer-->>UI: Polite conversational response
-    else Intent = RULES_QUERY
-        Router->>VectorDB: Query relevant chunks (k=3)
-        VectorDB-->>Synthesizer: Return top relevant handbook passages
-        Synthesizer-->>Synthesizer: Self-check against retrieved context
-        Synthesizer-->>UI: Grounded answer from Handbook
-    end
-
-    UI-->>Student: Display response with agent status
+    B -->|Just Saying Hi| C[ Polite Greeting]
+    B -->|Asking Rules| D[ Search Handbook DB]
+    
+    D --> E[ Accurate Answer]
+    C --> F[ Show to Student]
+    E --> F
 ```
 
 ---
